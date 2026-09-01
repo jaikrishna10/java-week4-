@@ -1,0 +1,40 @@
+import java.util.Scanner;
+
+public class Solution {
+
+    public static String timeConversion(String s) {
+        // Extract AM/PM from the last 2 characters
+        var meridiem = s.substring(s.length() - 2);
+        
+        // Extract the hour as an integer from the first 2 characters
+        var hour = Integer.parseInt(s.substring(0, 2));
+        
+        // Extract the middle part containing minutes and seconds (":MM:SS")
+        var rest = s.substring(2, s.length() - 2);
+
+        if ("AM".equals(meridiem)) {
+            if (hour == 12) {
+                hour = 0; // 12:XX:XXAM -> 00:XX:XX
+            }
+        } else { // "PM"
+            if (hour != 12) {
+                hour += 12; // 01:XX:XXPM -> 13:XX:XX, etc.
+            }
+        }
+
+        // Format hour with leading zero if needed (e.g., 0 becomes "00")
+        return String.format("%02d%s", hour, rest);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        if (scanner.hasNextLine()) {
+            String inputTime = scanner.nextLine().trim();
+            String result = timeConversion(inputTime);
+            System.out.println(result);
+        }
+        
+        scanner.close();
+    }
+}
